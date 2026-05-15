@@ -90,10 +90,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL  = '/sales/products/' 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://2006d105.pythonanywhere.com',
-    'https://2006d105.pythonanywhere.com',
-]
+CSRF_TRUSTED_ORIGINS = ['https://2006d105.pythonanywhere.com']
 
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
