@@ -12,7 +12,11 @@ SECRET_KEY = 'django-insecure-zg1_-jf6=x#&92t6odwtspqejph@uhhrbr3+$zqsrn8!vr%^#j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://www.pythonanywhere.com/user/2006d105/','127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    '2006d105.pythonanywhere.com',
+    '127.0.0.1',
+    'localhost',
+]
 
 # Application definition
 INSTALLED_APPS = [
@@ -91,8 +95,8 @@ LOGIN_REDIRECT_URL  = '/sales/products/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://www.pythonanywhere.com/user/2006d105/',
-    'https://www.pythonanywhere.com/user/2006d105/',
+    'https://2006d105.pythonanywhere.com',
+    'https://2006d105.pythonanywhere.com',
 ]
 
 SECURE_BROWSER_XSS_FILTER = True
