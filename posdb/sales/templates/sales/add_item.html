@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="km">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order #{{ order.pk }} — Adding Items</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #2563eb;
+        --success: #10b981;
+        --danger: #ef4444;
+        --bg: #f1f5f9;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        max-width: 800px; /* បង្រួមទទឹងឱ្យសមល្មម */
+        margin: 30px auto;
+        background: var(--bg);
+        color: #1e293b;
+        padding: 0 15px;
+      }
+
+      .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+
+      /* Table Design */
+      .card {
+        background: var(--white);
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+
+      th {
+        background: #f8fafc;
+        padding: 12px;
+        text-align: left;
+        color: #64748b;
+        border-bottom: 2px solid #edf2f7;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      /* Payment Info Section */
+      .payment-summary {
+        background: #f8fafc;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .total-amount {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--success);
+      }
+
+      /* Form Style */
+      .add-item-form {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 2fr 1fr auto;
+        gap: 15px;
+        align-items: end;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #475569;
+      }
+
+      select,
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        outline: none;
+        font-size: 0.9rem;
+      }
+
+      select:focus,
+      input:focus {
+        border-color: var(--primary);
+      }
+
+      .btn-add {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .btn-add:hover {
+        opacity: 0.9;
+      }
+
+      /* Live Subtotal Badge */
+      .live-preview {
+        padding: 8px 15px;
+        background: #eff6ff;
+        color: var(--primary);
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin-top: 15px;
+        display: inline-block;
+      }
+
+      /* Footer Buttons */
+      .footer-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        font-size: 0.9rem;
+      }
+
+      .btn-paid {
+        background: var(--success);
+        color: white;
+      }
+      .btn-cancel {
+        background: var(--danger);
+        color: white;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header-section">
+      <h1>🛒 Order #{{ order.pk }}</h1>
+      <span style="font-size: 0.9rem; color: #64748b"
+        >អ្នកគិតលុយ: <strong>{{ order.cashier }}</strong></span
+      >
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>ផលិតផល</th>
+            <th width="80">ចំនួន</th>
+            <th width="100">តម្លៃ</th>
+            <th width="100">សរុប</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in items %}
+          <tr>
+            <td><strong>{{ item.product.name }}</strong></td>
+            <td>{{ item.quantity }}</td>
+            <td>${{ item.unit_price }}</td>
+            <td><strong>${{ item.subtotal }}</strong></td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td
+              colspan="4"
+              style="text-align: center; color: #94a3b8; padding: 30px"
+            >
+              មិនទាន់មានទំនិញនៅឡើយ...
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="payment-summary">
+        <span style="font-weight: 600">សរុបត្រូវបង់ (Total):</span>
+        <span class="total-amount" id="final_order_total"
+          >${{ order.total|default:"0.00" }}</span
+        >
+      </div>
+    </div>
+
+    <div class="card" style="padding-bottom: 20px">
+      <form method="post" id="order-form" class="add-item-form">
+        {% csrf_token %}
+        <div class="form-group">
+          <label>ជ្រើសរើសទំនិញ</label>
+          <select
+            name="product"
+            id="product_id"
+            required
+            onchange="calculateLiveTotal()"
+          >
+            <option value="" data-price="0">--- រើសទំនិញ ---</option>
+            {% for p in products %}
+            <option value="{{ p.id }}" data-price="{{ p.price }}">
+              {{ p.name }} — ${{ p.price }} (ស្តុក: {{ p.stock }})
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>ចំនួន</label>
+          <input
+            type="number"
+            name="quantity"
+            id="quantity"
+            value="1"
+            min="1"
+            required
+            oninput="calculateLiveTotal()"
+          />
+        </div>
+
+        <button type="submit" class="btn-add">＋ បញ្ចូល</button>
+      </form>
+
+      <div style="padding: 0 20px">
+        <div class="live-preview">
+          តម្លៃប៉ាន់ស្មាន៖ $<span id="live_subtotal">0.00</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <form method="POST" style="display: inline">
+        {% csrf_token %}
+        <button type="submit" name="mark_paid" class="btn btn-paid">
+          ✔️ បង់ប្រាក់រួចរាល់
+        </button>
+      </form>
+
+      <form
+        action="{% url 'cancel_order' order.pk %}"
+        method="POST"
+        onsubmit="return confirm('លុបចោលការបញ្ជាទិញ?');"
+        style="display: inline"
+      >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-cancel">❌ បោះបង់</button>
+      </form>
+    </div>
+
+    <script>
+      function calculateLiveTotal() {
+        const select = document.getElementById("product_id");
+        const selectedOption = select.options[select.selectedIndex];
+        const price =
+          parseFloat(selectedOption.getAttribute("data-price")) || 0;
+        const qty = parseInt(document.getElementById("quantity").value) || 0;
+        const subtotal = price * qty;
+        document.getElementById("live_subtotal").innerText =
+          subtotal.toFixed(2);
+      }
+    </script>
+  </body>
+</html>
+@keyframes pulse { 0% { opacity: 1; }

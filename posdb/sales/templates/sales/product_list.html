@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="km">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🛒 POS Professional — បញ្ជីផលិតផល</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Freehand&family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary-blue: #2563eb;
+        --success-green: #10b981;
+        --warning-red: #ef4444;
+        --text-dark: #1e293b;
+        --bg-light: #f8fafc;
+        --white: #ffffff;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: var(--bg-light);
+        color: var(--text-dark);
+        line-height: 1.6;
+      }
+
+      /* Navigation Bar Style */
+      nav {
+        background: var(--white);
+        padding: 15px 25px;
+        border-radius: 50px;
+        display: flex;
+        gap: 20px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        margin-bottom: 40px;
+        width: fit-content;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.95em;
+        transition: color 0.3s;
+      }
+
+      nav a:hover {
+        color: var(--primary-blue);
+      }
+
+      h1 {
+        font-size: 2.2em;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 10px;
+      }
+
+      .stats-info {
+        color: #64748b;
+        margin-bottom: 30px;
+      }
+
+      /* Product Grid Layout */
+      .product-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .product-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.05),
+          0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        border-color: var(--primary-blue);
+      }
+
+      /* Image Styling */
+      .product-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 15px;
+        object-fit: cover;
+        background: #f1f5f9;
+        margin-right: 25px;
+        transition: transform 0.3s;
+      }
+
+      .product-card:hover .product-img {
+        transform: scale(1.05);
+      }
+
+      /* Info Styling */
+      .product-info {
+        flex-grow: 1;
+      }
+
+      .product-card h2 {
+        margin: 0;
+        font-size: 1.25em;
+      }
+
+      .product-card h2 a {
+        text-decoration: none;
+        color: var(--text-dark);
+        transition: color 0.2s;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 8px;
+        font-size: 0.75em;
+        font-weight: 700;
+        text-transform: uppercase;
+        background: #f1f5f9;
+        color: #475569;
+        margin-top: 8px;
+      }
+
+      .barcode-text {
+        font-family: "Courier New", monospace;
+        font-size: 0.85em;
+        color: #94a3b8;
+        display: block;
+        margin-top: 8px;
+      }
+
+      /* Pricing & Stock Styling */
+      .price-tag {
+        text-align: right;
+      }
+
+      .price {
+        font-size: 1.6em;
+        font-weight: 800;
+        color: var(--success-green);
+        margin: 0;
+      }
+
+      .stock-status {
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-top: 5px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        display: inline-block;
+      }
+
+      .in-stock {
+        background: #ecfdf5;
+        color: var(--success-green);
+      }
+
+      .low-stock {
+        background: #fef2f2;
+        color: var(--warning-red);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.6;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 100px 0;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="/sales/products/">ផលិតផល</a>
+      <a href="/sales/orders/">ការបញ្ជាទិញ</a>
+      <a href="/admin/">Admin Dashboard</a>
+    </nav>
+
+    <h1>🛒 បញ្ជីផលិតផល</h1>
+    <p class="stats-info">
+      មានផលិតផលចំនួន <strong>{{ products|length }}</strong> កំពុងដាក់លក់ក្នុងហាង
+    </p>
+
+    <div class="product-grid">
+      {% for product in products %}
+      <div
+        class="product-card"
+        onclick="window.location='/sales/products/{{ product.pk }}/'"
+      >
+        {% if product.image %}
+        <img
+          src="{{ product.image.url }}"
+          alt="{{ product.name }}"
+          class="product-img"
+        />
+        {% else %}
+        <img
+          src="https://via.placeholder.com/120?text=Product"
+          alt="No Image"
+          class="product-img"
+        />
+        {% endif %}
+
+        <div class="product-info">
+          <h2>
+            <a href="/sales/products/{{ product.pk }}/">{{ product.name }}</a>
+          </h2>
+          <span class="badge">{{ product.get_category_display }}</span>
+          {% if product.barcode %}
+          <span class="barcode-text">#{{ product.barcode }}</span>
+          {% endif %}
+        </div>
+
+        <div class="price-tag">
+          <p class="price">${{ product.price }}</p>
+          {% if product.stock <= 5 %}
+          <span class="stock-status low-stock"
+            >⚠️ ស្តុកទាប: {{ product.stock }}</span
+          >
+          {% else %}
+          <span class="stock-status in-stock"
+            >ក្នុងស្តុក: {{ product.stock }}</span
+          >
+          {% endif %}
+        </div>
+      </div>
+      {% empty %}
+      <div class="empty-state">
+        <p>មិនទាន់មានផលិតផលសម្រាប់លក់នៅឡើយទេ...</p>
+        <a href="/admin/" style="color: var(--primary-blue); font-weight: bold"
+          >បន្ថែមផលិតផលដំបូងរបស់អ្នក</a
+        >
+      </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

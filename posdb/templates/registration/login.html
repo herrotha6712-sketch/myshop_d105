@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="km">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HRT-PJ-DRAKK</title>
+    <link
+      href="https://www.google.com/imgres?q=cow&imgurl=https%3A%2F%2Fwww.betterwithdairy.com%2Fsites%2Fdefault%2Ffiles%2F2025-02%2FWhat_Does_Dairy_Cow_Eat.webp&imgrefurl=https%3A%2F%2Fwww.betterwithdairy.com%2Fblog%2Fname-cow-6-great-dairy-breeds&docid=edvAxdE0bo0HpM&tbnid=oF8F7q3wg8eKhM&vet=12ahUKEwjtjLi2mLSUAxVrzjgGHXWeASoQnPAOegQIEhAB..i&w=1200&h=1200&hcb=2&ved=2ahUKEwjtjLi2mLSUAxVrzjgGHXWeASoQnPAOegQIEhAB"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --bg: #f8fafc;
+        --white: #ffffff;
+        --danger: #ef4444;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        background-image: radial-gradient(
+          circle at 2px 2px,
+          #e2e8f0 1px,
+          transparent 0
+        );
+        background-size: 40px 40px; /* បន្ថែម background បែបទំនើប */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      .login-card {
+        background: var(--white);
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+      }
+
+      .logo-area {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .logo-icon {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        display: block;
+      }
+
+      h1 {
+        color: var(--text-main);
+        font-size: 1.5rem;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: -0.5px;
+      }
+
+      p.subtitle {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-top: 8px;
+      }
+
+      /* Styling Django Form fields */
+      form p {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-main);
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-sizing: border-box;
+        font-size: 1rem;
+        transition: all 0.2s;
+        background: #fcfcfd;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        background: var(--white);
+      }
+
+      button {
+        width: 100%;
+        padding: 14px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 10px;
+      }
+
+      button:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .errors {
+        background: #fef2f2;
+        color: var(--danger);
+        padding: 12px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+        border: 1px solid #fee2e2;
+        text-align: center;
+      }
+
+      .footer-text {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-card">
+      <div class="logo-area">
+        <span class="logo-icon">💡</span>
+        <h1>HRT-PJ-DRARKK</h1>
+        <p class="subtitle">សូមបញ្ចូលគណនីដើម្បីចាប់ផ្តើមការលក់</p>
+      </div>
+
+      {% if form.errors %}
+      <div class="errors">ឈ្មោះអ្នកប្រើ ឬលេខសម្ងាត់មិនត្រឹមត្រូវទេ។</div>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %} {{ form.as_p }}
+
+        <button type="submit">ចូលប្រើប្រាស់ (Log In)</button>
+      </form>
+
+      <div class="footer-text">
+        &copy; 2026 POS System Portfolio. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>
